@@ -1,5 +1,10 @@
 var express = require('express');
+var http = require("http");
+var parser = require('xml2json');
+const util = require('util')
+
 var app = express();
+
 
 // set the port of our application
 // process.env.PORT lets the port be set by Heroku
@@ -46,30 +51,32 @@ router.param('name', function(req, res, next, name) {
     next();
 });
 
-router.get('/', function(req, res) {
-  res.send('im the home page!');
-});
 
-// about page route (http://localhost:8080/about)
-router.get('/about', function(req, res) {
-    res.send('im the about page!');
-});
 
 // route with parameters (http://localhost:8080/hello/:name)
-router.get('/hello/:name', function(req, res) {
-    res.send('hello ' + req.params.name + '!');
+router.get('/api/search', function(req, res) {
+    var address = req.param('address');
+    var citystatezip = req.param('citystatezip');
+    var api_key='X1-ZWz199n5edun0r_32ywy';
+
+       var url= 'http://www.zillow.com/webservice/GetSearchResults.htm?zws-id='+api_key+'&address='+address+'&citystatezip='+citystatezip;
+
+       var gsaReq = http.get(url, function (response) {
+           var completeResponse = '';
+           response.on('data', function (chunk) {
+               completeResponse += chunk;
+           });
+           response.on('end', function() {
+                var json = parser.toJson(completeResponse);
+               console.log(json);
+                res.send('this is harshitas login form'+json);
+           })
+       }).on('error', function (e) {
+           console.log('problem with request: ' + e.message);
+       });
+
+
 });
-
-//login
-app.route('/login')
-  .get(function(req, res) {
-    res.send('this is the login form');
-  })
-  .post(function(req,res){
-    console.log('processing');
-        res.send('processing the login form!');
-  })
-
 
 // apply the routes to our application
 app.use('/', router);
