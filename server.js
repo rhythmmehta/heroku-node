@@ -28,36 +28,13 @@ app.listen(port, function() {
 });
 
 var router = express.Router();
-// route middleware that will happen on every request
-router.use(function(req, res, next) {
-
-    // log each request to the console
-    console.log(req.method, req.url);
-
-    // continue doing what we were doing and go to the route
-    next();
-});
-
-// route middleware to validate :name
-router.param('name', function(req, res, next, name) {
-    // do validation on name here
-    // blah blah validation
-    // log something so we know its working
-    console.log('doing name validations on ' + name);
-
-    // once validation is done save the new item in the req
-    req.name = name;
-    // go to the next thing
-    next();
-});
-
-
 
 // route with parameters (http://localhost:8080/hello/:name)
 router.get('/api/search', function(req, res) {
     var address = req.param('address');
     var citystatezip = req.param('citystatezip');
     var api_key='X1-ZWz199n5edun0r_32ywy';
+    var result={};
 
        var url= 'http://www.zillow.com/webservice/GetSearchResults.htm?zws-id='+api_key+'&address='+address+'&citystatezip='+citystatezip;
 
@@ -67,8 +44,19 @@ router.get('/api/search', function(req, res) {
                completeResponse += chunk;
            });
            response.on('end', function() {
-                var json = parser.toJson(completeResponse);;
-                res.send(json);
+                var json = parser.toJson(completeResponse);
+                var body = JSON.parse(json);
+
+                if(body['SearchResults:searchresults'].response) {
+                    result={
+                        response:body['SearchResults:searchresults'].response.results.result
+                    }
+                } else {
+                    result={
+                        message:body['SearchResults:searchresults'].message
+                    }
+                }
+                res.send(result);
            })
        }).on('error', function (e) {
            console.log('problem with request: ' + e.message);
