@@ -67,9 +67,8 @@ router.get('/api/search', function(req, res) {
                completeResponse += chunk;
            });
            response.on('end', function() {
-                var json = parser.toJson(completeResponse);
-               console.log(json);
-                res.send('this is harshitas login form'+json);
+                var json = parser.toJson(completeResponse);;
+                res.send(json);
            })
        }).on('error', function (e) {
            console.log('problem with request: ' + e.message);
