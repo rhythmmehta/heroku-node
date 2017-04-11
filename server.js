@@ -4,6 +4,8 @@ var parser = require('xml2json');
 const util = require('util')
 
 var app = express();
+var cors = require('cors');
+app.use(cors());
 
 
 // set the port of our application
