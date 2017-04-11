@@ -15,5 +15,8 @@ Sample Request: https://my-heroku-node.herokuapp.com/api/search?address=2114+Big
 
 ### Development & Deployment
 
-    ## This will watch for file changes as well as start a local server and serve @ port 8080 (http://localhost:8080/)
+    ## Start a local server and serve @ port 8080 (http://localhost:8080/)
     $ node server.js
+
+    ## Watch for file changes as well
+    $ npm run dev
