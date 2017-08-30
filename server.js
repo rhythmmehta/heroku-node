@@ -33,7 +33,7 @@ app.listen(port, function() {
 var router = express.Router();
 
 router.get('/api/users', function(req, res, next) {
-  pg.connect(conString, function(err, client, done) {
+  pg.connect(connString, function(err, client, done) {
     if (err) {
       return console.error('error fetching client from pool', err);
     }
@@ -49,7 +49,7 @@ router.get('/api/users', function(req, res, next) {
 });
 
 router.post('/api/users', function(req, res, next) {
-  pg.connect(conString, function(err, client, done) {
+  pg.connect(connString, function(err, client, done) {
     if (err) {
       return console.error('error fetching client from pool', err);
     }
