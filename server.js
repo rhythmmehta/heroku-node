@@ -10,7 +10,6 @@ const util = require('util');
 var app = express();
 var cors = require('cors');
 app.use(cors());
-app.use(express.logger());
 
 
 
@@ -22,7 +21,6 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.get('/', function(req, res) {
-
     res.render('index');
 });
 
@@ -33,15 +31,16 @@ app.listen(port, function() {
 var router = express.Router();
 
 router.get('/api/users', function(req, res, next) {
-  pg.connect(connString, function(err, client, done) {
-    if (err) {
-      return console.error('error fetching client from pool', err);
-    }
-    console.log("connected to database");
-    client.query('SELECT * FROM users', function(err, result) {
-      done();
-      if (err) {
-        return console.error('error running query', err);
+
+    pg.connect(connString, function(err, client, done) {
+        if (err) {
+            return console.error('error fetching client from pool', err);
+        }
+        console.log("connected to database");
+        client.query('SELECT * FROM users', function(err, result) {
+            done();
+            if (err) {
+                return console.error('error running query', err);
       }
       res.send(result);
     });
