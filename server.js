@@ -43,7 +43,7 @@ router.get('/api/users', function(req, res, next) {
             if (err) {
                 return console.error('error running query', err);
       }
-      res.send(result);
+      res.send(result.rows);
     });
   });
 });
@@ -62,7 +62,7 @@ router.post('/api/users', function(req, res, next) {
       return console.error('error fetching client from pool', err);
     }
     console.log("connected to database");
-    console.log(email, apples)
+    console.log(result);
     client.query('INSERT INTO users(email, apples, oranges, mixed, result) VALUES($1,$2,$3,$4,$5)', [email, apples, oranges,mixed,result], function(err, result) {
       done();
       if(err) {
