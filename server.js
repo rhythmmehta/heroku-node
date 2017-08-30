@@ -47,7 +47,7 @@ router.get('/api/users', function(req, res, next) {
   });
 });
 
-router.post('/api/users', function(req, res, next) {
+router.post('/api/submit', function(req, res, next) {
   pg.connect(connString, function(err, client, done) {
     if (err) {
       return console.error('error fetching client from pool', err);
