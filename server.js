@@ -1,27 +1,28 @@
+var connString = 'postgres://atfgwsdzxlfpxs:d7a12e3fbfdcab0d7bcf4f5d06bbc4071f941ef72c2da336de19093c5ffc2040@ec2-184-73-189-221.compute-1.amazonaws.com:5432/d73qvnddija9l5';
+
+var pg = require('pg');
 var express = require('express');
 var http = require("http");
 var parser = require('xml2json');
-const util = require('util')
+const util = require('util');
+
 
 var app = express();
 var cors = require('cors');
 app.use(cors());
+app.use(express.logger());
 
 
-// set the port of our application
-// process.env.PORT lets the port be set by Heroku
+
 var port = process.env.PORT || 8080;
 
-// set the view engine to ejs
 app.set('view engine', 'ejs');
 
-// make express look in the public directory for assets (css/js/img)
 app.use(express.static(__dirname + '/public'));
 
-// set the home page route
+
 app.get('/', function(req, res) {
 
-    // ejs render automatically looks in the views folder
     res.render('index');
 });
 
@@ -31,41 +32,38 @@ app.listen(port, function() {
 
 var router = express.Router();
 
-// route with parameters (http://localhost:8080/hello/:name)
-router.get('/api/search', function(req, res) {
-    var address = req.param('address');
-    var citystatezip = req.param('citystatezip');
-    var api_key='X1-ZWz199n5edun0r_32ywy';
-    var result={};
-
-       var url= 'http://www.zillow.com/webservice/GetSearchResults.htm?zws-id='+api_key+'&address='+address+'&citystatezip='+citystatezip;
-
-       var gsaReq = http.get(url, function (response) {
-           var completeResponse = '';
-           response.on('data', function (chunk) {
-               completeResponse += chunk;
-           });
-           response.on('end', function() {
-                var json = parser.toJson(completeResponse);
-                var body = JSON.parse(json);
-
-                if(body['SearchResults:searchresults'].response) {
-                    result={
-                        response:body['SearchResults:searchresults'].response.results.result
-                    }
-                } else {
-                    result={
-                        message:body['SearchResults:searchresults'].message
-                    }
-                }
-                res.send(result);
-           })
-       }).on('error', function (e) {
-           console.log('problem with request: ' + e.message);
-       });
-
-
+router.get('/api/users', function(req, res, next) {
+  pg.connect(conString, function(err, client, done) {
+    if (err) {
+      return console.error('error fetching client from pool', err);
+    }
+    console.log("connected to database");
+    client.query('SELECT * FROM users', function(err, result) {
+      done();
+      if (err) {
+        return console.error('error running query', err);
+      }
+      res.send(result);
+    });
+  });
 });
 
-// apply the routes to our application
+router.post('/api/users', function(req, res, next) {
+  pg.connect(conString, function(err, client, done) {
+    if (err) {
+      return console.error('error fetching client from pool', err);
+    }
+    console.log("connected to database");
+    client.query('INSERT INTO users(email, apples, oranges, mixed, result) VALUES($1,$2,$3,$4,$5)' [req.body.email, req.body.apples, req.body.oranges,req.body.mixed,req.body.result], function(err, result) {
+      done();
+      if(err) {
+        return console.error('error running query', err);
+      }
+      res.send(result);
+    });
+  });
+});
+
+
+
 app.use('/', router);

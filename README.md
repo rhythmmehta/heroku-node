@@ -1,7 +1,7 @@
-# Zillow coding challenge
+# Styku Challenge - Database Connect
 
-- Create a simple Api which gets the GetSearchResults API and parses and returns the response as json. Deployed to https://my-heroku-node.herokuapp.com/.
-Sample Request: https://my-heroku-node.herokuapp.com/api/search?address=2114+Bigelow+Ave&citystatezip=Seattle%2C+WA
+- Create a simple Api which gets the GetSearchResults API and parses and returns the response as json. Deployed to https://polar-badlands-41418.herokuapp.com/
+Sample Request: https://polar-badlands-41418.herokuapp.com/api/users?address=2114+Bigelow+Ave&citystatezip=Seattle%2C+WA
 
 
 ### Pre-requisite
