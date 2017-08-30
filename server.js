@@ -48,13 +48,22 @@ router.get('/api/users', function(req, res, next) {
   });
 });
 
-router.post('/api/submit', function(req, res, next) {
+router.post('/api/users', function(req, res, next) {
+    var email = req.param('email');
+    var apples = req.param('apples');
+    var oranges = req.param('oranges');
+    var mixed = req.param('mixed');
+    var result = req.param('result');
+
+
+    var result={};
   pg.connect(connString, function(err, client, done) {
     if (err) {
       return console.error('error fetching client from pool', err);
     }
     console.log("connected to database");
-    client.query('INSERT INTO users(email, apples, oranges, mixed, result) VALUES($1,$2,$3,$4,$5)' [req.body.email, req.body.apples, req.body.oranges,req.body.mixed,req.body.result], function(err, result) {
+    console.log(email, apples)
+    client.query('INSERT INTO users(email, apples, oranges, mixed, result) VALUES($1,$2,$3,$4,$5)', [email, apples, oranges,mixed,result], function(err, result) {
       done();
       if(err) {
         return console.error('error running query', err);
