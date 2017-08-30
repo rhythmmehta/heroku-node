@@ -1,8 +1,13 @@
 # Styku Challenge - Database Connect
 
-- Create a simple Api which gets the GetSearchResults API and parses and returns the response as json. Deployed to https://polar-badlands-41418.herokuapp.com/
-Sample Request: https://polar-badlands-41418.herokuapp.com/api/users?address=2114+Bigelow+Ave&citystatezip=Seattle%2C+WA
+- A simple node app that connects to a Heroku Postgres Database.
+Deployed at:  https://polar-badlands-41418.herokuapp.com/
 
+To add to database:
+Sample Request: https://polar-badlands-41418.herokuapp.com/api/users?email=1234@test.com&apples=Apples&oranges=Oranges&mixed=Mixed&result=Wrong
+
+To view the database:
+https://polar-badlands-41418.herokuapp.com/api/users
 
 ### Pre-requisite
 

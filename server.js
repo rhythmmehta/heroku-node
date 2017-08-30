@@ -53,24 +53,22 @@ router.post('/api/users', function(req, res, next) {
     var apples = req.param('apples');
     var oranges = req.param('oranges');
     var mixed = req.param('mixed');
-    var result = req.param('result');
+    var results = req.param('result');
 
-
-    var result={};
-  pg.connect(connString, function(err, client, done) {
-    if (err) {
-      return console.error('error fetching client from pool', err);
-    }
-    console.log("connected to database");
-    console.log(result);
-    client.query('INSERT INTO users(email, apples, oranges, mixed, result) VALUES($1,$2,$3,$4,$5)', [email, apples, oranges,mixed,result], function(err, result) {
-      done();
-      if(err) {
-        return console.error('error running query', err);
-      }
-      res.send(result);
+    pg.connect(connString, function(err, client, done) {
+        if (err) {
+            return console.error('error fetching client from pool', err);
+        }
+        console.log("connected to database");
+        console.log(results);
+        client.query('INSERT INTO users(email, apples, oranges, mixed, result) VALUES($1,$2,$3,$4,$5)', [email, apples, oranges,mixed,results], function(err, result) {
+            done();
+            if(err) {
+                return console.error('error running query', err);
+            }
+            res.send(result);
+        });
     });
-  });
 });
 
 
